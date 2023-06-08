@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+require('dotenv').config()
 const { UserModel } = require('../Model/user.model');
 const { registerCheck } = require('../MiddleWare/passwordStrongOrNot.middleWare');
 const userRoutes = express.Router();
@@ -36,7 +37,7 @@ userRoutes.post('/login', async (req, res) => {
     try {
         const user = await UserModel.findOne({ email });
         bcrypt.compare(pass, user.pass, async (err, result) => {
-            const token = jwt.sign({ userID : user._id , user : user.name }, 'masai');
+            const token = jwt.sign({ userID : user._id , user : user.name }, process.env.secrate);
             if (result) {
                 res.status(200).json({ msg: "Login Successful!!", token: token });
             }
