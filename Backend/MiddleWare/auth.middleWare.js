@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken');
 const { model } = require('mongoose');
+require('dotenv').config();
 const auth = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
     if (token) {
         try {
-            const decode = jwt.verify(token, "masai");
+            const decode = jwt.verify(token, process.env.secrate);
             if (decode) {
                 req.body.userID = decode.userID;
                 req.body.user = decode.user;
